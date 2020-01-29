@@ -18,24 +18,24 @@
 </head>
 <body>
     <center>
-        <div class="header">
+        <div class="header" style="padding: 18px 10px;">
             <i class="fa fa-file-medical fa-3x">MedSafe</i>
         </div>
     </center>
     <div class="container">
         <div class="wrapper">
-            <nav id="sidebar">
-                <div class="sidebar-header">
+            <nav id="sidebar" style="border-right:solid black 5px; background: -webkit-linear-gradient(top, #3931af, #00c6ff);">
+                <div class="sidebar-header" style="margin-top:3%;">
                     <center> 
                         <img src="{{ URL::asset('css/images/userIcon.png') }}" style="width:80%; height:auto;"> 
                         <br><br>
-                        <p>Hi [User's Name]</p>
+                        <p style="font-size:18px;">Hi <?php echo Session::get('user');?></p>
                     </center>
                 </div>
                 <div>
                     <ul class="list-unstyled components">
                         <li>
-                            <a href="events" ><i class="far fa-calendar-alt fa-2x"></i>Calendar</a>
+                            <a style="color:black;" href="{{route('index')}}"><i style="color:black;" class="far fa-calendar-alt fa-2x"></i>Calendar</a>
                         </li>
                         <li>
                             <a><i class="fa fa-calendar-plus fa-2x"></i>Add Appointment</a>
@@ -43,8 +43,8 @@
                     </ul>
                 </div>  
             </nav>
-        </div>                
-        <div class="panel panel-primary" style="width:600px; margin-left: 30%; margin-right: 25%; margin-top: 1.5%; overflow: hidden">
+        </div>         
+        <div class="panel panel-primary" style="width:600px; margin-left:35%; margin-right: 25%; margin-top: 1%;">
             <div class="panel-heading">
                 My Calender    
             </div>

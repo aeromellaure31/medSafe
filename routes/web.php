@@ -44,7 +44,8 @@ Route::get('/patient', function () {
 Route::post('/user/register','patientController@createUser')->name('account.create');
 
 Route::get('/users','patientController@retrieveUser')->name('patients.all');
-Route::get('/doctor/{id}','patientController@search_doctor')->name('search.doctor');
+Route::get('/doc/{id}','patientController@search_doctor')->name('search.doctor');
+Route::get('/dashboard/back','patientController@retrieveDoctor')->name('cancel');
 Route::get('/doctor/{doctor_id}/request','patientController@send_request')->name('request.doctor');
 Route::get('/doctor/accept/{request_id}','patientController@accept_request')->name('accept.request');
 Route::post('/doctor/specialty','patientController@search_doctors_by_category')->name('doctor.specialty');
@@ -54,6 +55,11 @@ Route::post('/login/dashboard','patientController@login')->name('login');
 Route::get('/sidebar', function () {
     return view('sidebar');
 });
+
+Route::get('/patient/records', function () {
+    return view('records');
+});
+
 
 // Route::get('/doctor-register', 'general_controller@doctor_reg')->name('Doctor.Register');
 Route::get('/register', 'general_controller@register')->name('register');

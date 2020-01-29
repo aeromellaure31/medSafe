@@ -68,10 +68,16 @@ class patientController extends Controller
         print_r($users . "<br><br>");
     }
 
-    public function search_doctor(Request $request)
+    public function search_doctor(Request $request, $id)
     {
-        $doctor = doctors::find($request->id);
-        echo $doctor;
+        $doctors = doctors::with('specialty')->where('id', $id)->get();
+        return view('viewprofile', ['doctors'=>$doctors]);
+    }
+
+    public function retrieveDoctor(Request $request)
+    {
+        $doctors = doctors::all();
+        return view('patientDashboard', compact('doctors'));
     }
 
     // search doctors by patient in the search bar (specialty).
@@ -141,27 +147,29 @@ class patientController extends Controller
         $validate_email = patient::select('password')->where('email', $request->email)->get();
         if (count($validate_email) < 1) {
             $validate_email = doctors::select('password')->where('email', $request->email)->get();
+            $id = doctors::select('id')->where('email', $request->email)->get();
+            $user = doctors::find($id);
             if (count($validate_email) >= 1) {
                 if ($validate_email[0]->password == $request->password) {
                     $this->user_email = $request->email;
+                    \Session::flash('user', $user[0]->firstname." ".$user[0]->lastname);
                     return view('dashboard_doctor', compact('doctors'));
-                    $_SESSION['login'] = true;
                 } else {
-                    $_SESSION['login'] = false;
                     return redirect('/');
                 }
             } else {
-                $_SESSION['login'] = false;
                 return redirect('/');
             }
         } else {
             if ($validate_email[0]->password == $request->password) {
                 $doctors = doctors::all();
                 $this->user_email = $request->email;
+                $validate_email = patient::select('password')->where('email', $request->email)->get();
+                $id = patient::select('id')->where('email', $request->email)->get();
+                $user = patient::find($id);
+                \Session::flash('user', $user[0]->firstname." ".$user[0]->lastname);
                 return view('patientDashboard', compact('doctors'));
-                $_SESSION['login'] = true;
             } else {
-                $_SESSION['login'] = false;
                 return redirect('/');
             }
         }

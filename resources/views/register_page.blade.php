@@ -13,7 +13,6 @@
                 <div class="col-md-3 register-left">
                     <h3><i class="fa fa-file-medical"></i>MedSafe</h3>
                     <p>Make it safe and easy!</p><hr style="background-color:red">
-                    {{-- <a href="/login" ><input type="submit" name="login" value="Login"/><br/></a> --}}
                     <form action="{{route('login')}}" method="post">
                         @csrf
                         <div style="background-color:transparent; margin-top:-5%;">
@@ -151,7 +150,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="License Number" value="" autocomplete='off'/>
+                                        <input type="text" class="form-control" name="licenseNum" placeholder="License Number" value="" autocomplete='off'/>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control" name='specialtyId'  placeholder="License Type" value="" autocomplete='off'/>

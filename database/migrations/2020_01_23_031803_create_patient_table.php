@@ -19,7 +19,7 @@ class CreatePatientTable extends Migration
             $table->string('middlename',255);
             $table->string('lastname',255);
             $table->bigInteger('phoneNum');
-            $table->string('email',255);
+            $table->string('email',255)->unique();
             $table->integer('age');
             $table->string('gender',255);
             $table->string('address',255);

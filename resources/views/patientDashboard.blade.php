@@ -168,29 +168,14 @@
         <input type="submit" placeholder=submit>
     </form>
     @foreach($doctors as $doctor)
-    <div class="container" style="border:solid black; width:300px; float:left; margin-left:10px;margin-top:10px;">
-        <center>
-            <h3>{{$doctor->firstname." ".$doctor->middlename}}</h3>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"> view profile </button><br><br>
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Dr. {{$doctor->firstname}} {{$doctor->lastname}} </h4>
-                        </div>
-                        <div class="modal-body">
-                            <img src="https://image.freepik.com/free-photo/beautiful-young-female-doctor-looking-camera-office_1301-7807.jpg" height='200px' width='auto' >
-                            <p>{{$doctor->specialty}}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </center>
-    </div>
+        <div class="container" style="border:solid black; width:300px; float:left; margin-left:10px;margin-top:10px;">
+            <center>
+                <h3>{{$doctor->firstname." ".$doctor->middlename}}</h3>
+                <form action="{{ route('search.doctor', $doctor->id )}}" method="get">
+                    <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#myModal"> view profile </button><br><br>
+                </form>
+            </center>
+        </div>
     @endforeach 
 </div>
 </body>
