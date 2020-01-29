@@ -40,6 +40,9 @@
                         <li>
                             <a><i class="fa fa-calendar-plus fa-2x"></i>Add Appointment</a>
                         </li>
+                        <li>
+                            <a><i class="fa fa-sign-out-alt fa-2x"></i>Logout</a>
+                        </li>
                     </ul>
                 </div>  
             </nav>
