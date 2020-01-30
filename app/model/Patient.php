@@ -18,4 +18,6 @@ class Patient extends Model
      public function nationality(){
          return $this->hasOne('App\model\Nationalities','id','nationality');
      }
+
+     
 }

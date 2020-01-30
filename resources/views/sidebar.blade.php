@@ -4,7 +4,7 @@
            <center> 
                 <img src="{{ URL::asset('css/images/userIcon.png') }}" style="width:80%; height:auto;"> 
                 <br><br>
-                <p>Hi <?php echo Session::get('user');?></p>
+                <p>Hi {{session("user")}}</p>
            </center>
         </div>
         <div>
@@ -13,10 +13,10 @@
                     <a style="color:black;" href="{{route('index')}}"><i style="color:black;" class="far fa-calendar-alt fa-2x"></i>Calendar</a>
                 </li>
                 <li>
-                    <a><i class="fa fa-calendar-plus fa-2x"></i>Add Appointment</a>
+                    <a href="{{url('insertRecords')}}"><i class="fa fa-calendar-plus fa-2x"></i>Add Appointment</a>
                 </li>
                 <li>
-                    <a><i class="fa fa-sign-out-alt fa-2x"></i>Logout</a>
+                    <a href="{{route('fetch')}}"><i class="fa fa-sign-out-alt fa-2x"></i>Logout</a>
                 </li>
             </ul>
         </div>  

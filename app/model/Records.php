@@ -8,6 +8,10 @@ class Records extends Model
 {
     //
     protected $fillable = [
-        'patient_id','diagnosis','status'
+        'patientId','doctorId','illness', 'causeBy', 'physicalExam', 'assessment', 'recommendation',
     ];
+
+    public function patient(){
+        return $this->hasMany('App\model\Patient','id','patientId');
+    }
 }

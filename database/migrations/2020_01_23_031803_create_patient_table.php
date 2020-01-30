@@ -13,7 +13,7 @@ class CreatePatientTable extends Migration
      */
     public function up()
     {
-        Schema::create('patient', function (Blueprint $table) {
+        Schema::create('patients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('firstname',255);
             $table->string('middlename',255);
@@ -37,6 +37,6 @@ class CreatePatientTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patient');
+        Schema::dropIfExists('patients');
     }
 }

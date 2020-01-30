@@ -50,13 +50,21 @@ class patientController extends Controller
             $user->specialtyId = $id_specialty;
             $user->nationalityId = $id_nationality;
             $user->save();
-            return redirect('/doctor/dashboard');
+            $id = doctors::select('id')->where('email', $request->email)->get();
+            $doc = doctors::find($id);
+            $request->session()->put('user', $doc[0]->firstname." ".$doc[0]->lastname);
+            $request->session()->put('doctorId', $id);
+            return redirect('/doctor/dashboard')->with('user', $request->session()->get('user'));
         } else {
             $user = new patient($data);
             $user->nationalityId = $id_nationality;
             $doctors = doctors::all();
             $user->save();
-            return view('patientDashboard', compact('doctors'));
+            $id = patient::select('id')->where('email', $request->email)->get();
+            $patient = patient::find($id);
+            $request->session()->put('user', $patient[0]->firstname." ".$patient[0]->lastname);
+            $request->session()->put('patientId', $id);
+            return view('patientDashboard', compact('doctors'))->with('user', $request->session()->get('user'));
         }
     }
 
@@ -152,8 +160,9 @@ class patientController extends Controller
             if (count($validate_email) >= 1) {
                 if ($validate_email[0]->password == $request->password) {
                     $this->user_email = $request->email;
-                    \Session::flash('user', $user[0]->firstname." ".$user[0]->lastname);
-                    return view('dashboard_doctor', compact('doctors'));
+                    $request->session()->put('user', $user[0]->firstname." ".$user[0]->lastname);
+                    $request->session()->put('doctorId', $id);
+                    return view('dashboard_doctor', compact('doctors'))->with('user', $request->session()->get('user'));
                 } else {
                     return redirect('/');
                 }
@@ -167,8 +176,9 @@ class patientController extends Controller
                 $validate_email = patient::select('password')->where('email', $request->email)->get();
                 $id = patient::select('id')->where('email', $request->email)->get();
                 $user = patient::find($id);
-                \Session::flash('user', $user[0]->firstname." ".$user[0]->lastname);
-                return view('patientDashboard', compact('doctors'));
+                $request->session()->put('user', $user[0]->firstname." ".$user[0]->lastname);
+                $request->session()->put('patientId', $id);
+                return view('patientDashboard', compact('doctors'))->with('user', $request->session()->get('user'));
             } else {
                 return redirect('/');
             }

@@ -15,9 +15,13 @@ class CreateRecordsTable extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('patient_id');
-            $table->string('diagnosis');
-            $table->string('status');
+            $table->integer('patientId');
+            $table->integer('doctorId');
+            $table->string('illness');
+            $table->string('causeBy');
+            $table->string('physicalExam');
+            $table->string('assessment');
+            $table->string('recommendation');
             $table->timestamps();
         });
     }

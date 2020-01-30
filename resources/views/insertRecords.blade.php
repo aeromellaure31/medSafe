@@ -37,6 +37,7 @@
 
         input{
             border-radius: 5px;
+            border-style:inset;
         }
 
         textarea{
@@ -57,34 +58,38 @@
     </div> 
     <div class="container" style="background-color: white; height:550px; width:1000px; margin-left: 22.5%; margin-top: 1%; overlay-y: scroll;">
         <div><br>
-            <h4>Name: <input type="text" placeholder="name..."> &nbsp;&nbsp; Date of Birth: <input type="text" placeholder="birthdate..."></h4>
-            <center>
-                <h1>Findings</h1>
-            </center>
-            <h5>Illness:&nbsp;&nbsp;<input type="text" placeholder="illness..."></h5>
-            <h5> Caused by:&nbsp;&nbsp;<input type="text" placeholder="cause..."></h5><br>
-            <div class="design">
+            <form action="{{route('insert')}}" method="get">
+                @csrf
+                <h4>Name: <input type="text" name="name" placeholder="name..."> &nbsp;&nbsp; Date: <input name="bday" type="text" placeholder="birthdate..."></h4>
                 <center>
-                    <h5>Physical Exam Findings</h5>
+                    <h1>Findings</h1>
                 </center>
-                <textarea class="form-control z-depth-1" placeholder="Write here..."></textarea>
-            </div>
-            <div class="design">
-                <center>
-                    <h5>Doctor's Assessment</h5>
+                <h5>Illness:&nbsp;&nbsp;<input name="illness" type="text" placeholder="illness..."></h5>
+                <h5> Caused by:&nbsp;&nbsp;<input name="causeBy" type="text" placeholder="cause..."></h5><br>
+                <div class="design">
+                    <center>
+                        <h5>Physical Exam Findings</h5>
+                    </center>
+                    <textarea name="physicalExam" class="form-control z-depth-1" placeholder="Write here..."></textarea>
+                </div>
+                <div class="design">
+                    <center>
+                        <h5>Doctor's Assessment</h5>
+                    </center>
+                    <textarea name="assessment" class="form-control z-depth-1" placeholder="Write here..."></textarea>
+                </div>
+                <div class="design">
+                    <center>
+                        <h5>Doctor's Recommendation</h5>
+                    </center>
+                    <textarea name="recommendation" class="form-control z-depth-1" placeholder="Write here..."></textarea>
+                </div>
+                <center
+                    <h4 style="margin-top:26%;" name="doctor"><u>{{session("user")}}</u></h4><br>
+                    Doctor's Name
                 </center>
-                <textarea class="form-control z-depth-1" placeholder="Write here..."></textarea>
-            </div>
-            <div class="design">
-                <center>
-                    <h5>Doctor's Recommendation</h5>
-                </center>
-                <textarea class="form-control z-depth-1" placeholder="Write here..."></textarea>
-            </div>
-            <center
-                 <h4 style="margin-top:26%;">________ewsr________</h4><br>
-                 Doctor's Name
-            </center>
+                <button style="float:right; margin-top:-4.3%; margin-right:5%;" type="submit" class="btn btn-primary">Create</button>
+            </form>
         </div>
     </div>
 </body>

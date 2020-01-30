@@ -1,5 +1,9 @@
 <?php
 
+use App\Events\formSubmitted;
+use Illuminate\Http\Request;
+use App\Http\Requests;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +27,17 @@ Route::get('/patient/dashboard',function (){
 });
 Route::get('/doctor/dashboard',function (){
     return view('dashboard_doctor');
+});
+Route::get('/pusher',function (){
+    return view('pusher');
+});
+Route::get('/sender',function (){
+    return view('sender');
+});
+
+Route::post('/sender',function (){
+    $text = request()->text;
+    event(new formSubmitted($text));
 });
 
 Route::get('/dashboard', function () {
@@ -50,14 +65,19 @@ Route::get('/doctor/{doctor_id}/request','patientController@send_request')->name
 Route::get('/doctor/accept/{request_id}','patientController@accept_request')->name('accept.request');
 Route::post('/doctor/specialty','patientController@search_doctors_by_category')->name('doctor.specialty');
 Route::post('/login/dashboard','patientController@login')->name('login');
-
+Route::get('/create/records','insertRecords@insertRecord')->name('insert');
+Route::get('/fetch/rec','insertRecords@fetchRecord')->name('fetch');
 
 Route::get('/sidebar', function () {
     return view('sidebar');
 });
 
-Route::get('/patient/records', function () {
-    return view('records');
+// Route::get('/patient/records', function () {
+//     return view('records');
+// });
+
+Route::get('/insertRecords', function (Request $request) {
+    return view('insertRecords')->with("user" , $request->session()->get('user'));
 });
 
 
