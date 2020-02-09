@@ -20,7 +20,7 @@ class CreateDoctorsTable extends Migration
             $table->string('lastname');
             $table->bigInteger('phoneNum');
             $table->string('email')->unique();
-            $table->string('licenseNum');
+            $table->integer('licenseNum');
             $table->integer('specialtyId');
             $table->integer('age');
             $table->string('gender');

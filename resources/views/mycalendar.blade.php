@@ -1,19 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
-    <link rel='stylesheet' type='text/css' href="{{ url('css/sidebar.css')}}"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-    <link rel='stylesheet' type='text/css' href="{{ url('css/header.css')}}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@include('modal.scripts')
     <style>
         .error{
             color: red;
             font-style: italic;
         }
+        #addButton{
+            height: 50px;
+            width: 50px;
+            background-color: #e4eef0;
+            border-radius: 50%;
+            color: #008CBA ; 
+            font-size:50px;
+            margin-left:400px;
+            padding:10px;
+        }
+        .panel-primary{
+            width:600px; 
+            margin-left:55%; 
+            margin-right: 25%; 
+            margin-top: 1%;
+        }
+        #addButton:hover{
+            padding: 20px;
+            border-radius: 40px;
+            color:#e1a5e6 ;
+            -webkit-transition: border-radius 2s;
+        }
+ 
+        .blurred-background {
+            position: fixed;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background: rgb(54, 54, 54, .7);
+
+        }
+        .alert-box {
+            background: white;
+            display: inline-block;
+            margin-top: 180px;
+            font-weight: lighter;
+            border-radius: 3px;
+            font-size: 30px;
+            padding: 20px;
+            transition: .2s;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            background: dodgerblue;
+            color: white;
+        }
+    
     </style>
 </head>
 <body>
@@ -23,40 +74,71 @@
         </div>
     </center>
     <div class="container">
-        <div class="wrapper">
-            <nav id="sidebar" style="border-right:solid black 5px; background: -webkit-linear-gradient(top, #3931af, #00c6ff);">
-                <div class="sidebar-header" style="margin-top:3%;">
-                    <center> 
-                        <img src="{{ URL::asset('css/images/userIcon.png') }}" style="width:80%; height:auto;"> 
-                        <br><br>
-                        <p style="font-size:18px;">Hi <?php echo Session::get('user');?></p>
-                    </center>
-                </div>
-                <div>
-                    <ul class="list-unstyled components">
-                        <li>
-                            <a style="color:black;" href="{{route('index')}}"><i style="color:black;" class="far fa-calendar-alt fa-2x"></i>Calendar</a>
-                        </li>
-                        <li>
-                            <a><i class="fa fa-calendar-plus fa-2x"></i>Add Appointment</a>
-                        </li>
-                        <li>
-                            <a><i class="fa fa-sign-out-alt fa-2x"></i>Logout</a>
-                        </li>
-                    </ul>
-                </div>  
-            </nav>
-        </div>         
-        <div class="panel panel-primary" style="width:600px; margin-left:35%; margin-right: 25%; margin-top: 1%;">
-            <div class="panel-heading">
-                My Calender    
-            </div>
-            <div class="panel-body">
-                {!!$calendar->calendar() !!}
-                {!!$calendar->script() !!}
+            <div class="wrapper">
+                    <nav id="sidebar">
+                        <div class="sidebar-header" style="margin-top:3%;">
+                           <center> 
+                                <img src="{{ URL::asset('css/images/userIcon.png') }}" style="width:80%; height:auto;">
+                                <br><br>
+                                <p>Hi {{session("user")}}</p>
+                           </center>
+                        </div>
+                        <div>
+                            <ul class="list-unstyled components">
+                                <li>
+                                    <a style="color:black; font-size:18px;" href="{{url('patients')}}"><i style="color:black;" class="fa fa-home fa-2x"></i>Home</a>
+                                </li>
+                                <li>
+                                    <a style="color:black; font-size:18px;" href="{{route('index')}}"><i style="color:black;" class="far fa-calendar-alt fa-2x"></i>Calendar</a>
+                                </li>
+                                <li>
+                                    <a style="font-size:18px;" href="{{ url('doctor-logout') }}"
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        <i class="fa fa-sign-out-alt fa-2x"></i>Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('doctor.logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>  
+                    </nav>
+                </div><br><br><br><br>
+        <table>
+            <tr>
+                <td>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            My Calender    
+                        </div>
+                        <div class="panel-body">
+                            {!!$calendar->calendar() !!}
+                            {!!$calendar->script() !!}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a data-toggle="modal" href = '#addAppointment' data-target="#addAppointment">
+                       <span id = 'addButton' >+</span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    @include('modal.addAppointment')
+        <div id="modal" class="blurred-background" style='display:none;'>
+            <div class="alert-box">
+                <p id = 'title'></p>
+                <button style='margin-top: 10px;' class="btn" onclick="hide()">OK</button>
             </div>
         </div>
-    </div>
-</body>
 
+    
+</body>
+<script>
+  function hide() {
+    $("#modal").hide()
+  }
+</script>
 </html>

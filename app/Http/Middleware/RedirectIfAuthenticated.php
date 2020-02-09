@@ -17,10 +17,19 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+        // dd(Auth::guard()->check());
+        switch ($guard) {
+            case 'doctor':
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/patients');
+                }
+                break;
+            case 'patient':
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/dashboard/back');
+                }
+                break;
         }
-
         return $next($request);
     }
 }

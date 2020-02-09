@@ -1,84 +1,81 @@
 body {
-            font-family: 'Poppins', sans-serif;
-            background: #fafafa;
-        }
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
 
-        p {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1em;
-            font-weight: 300;
-            line-height: 1.7em;
-            color: #999;
-        }
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
 
-        a, a:hover, a:focus {
-            color: inherit;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
 
-        #sidebar {
-            /* background: #b3b3b3; */
-            color: #fff;
-            /* transition: all 0.3s; */
-        }
+#sidebar {
+    color: #fff;
+    background: -webkit-linear-gradient(top, transparent, #66d9ff);
+}
 
-        #sidebar .sidebar-header {
-            /*  padding: 20px; */
-            background: transparent;
-            border-bottom: 1px solid #47748b;
-        }
+#sidebar .sidebar-header {
+    background: transparent;
+    border-bottom: 1px solid #47748b;
+}
 
-        #sidebar ul.components {
-            padding: 20px 0;
-            /* border-bottom: 1px solid #47748b; */
-        }
+#sidebar ul.components {
+    padding: 20px 0;
+}
 
-        #sidebar ul p {
-            color: black;
-            padding: 10px;
-        }
+#sidebar ul p {
+    color: black;
+    padding: 10px;
+}
 
-        #sidebar ul li a {
-            padding: 10px;
-            font-size: 1.1em;
-            display: block;
-        }
-        #sidebar ul li a:hover {
-            color: #fff;
-            background: #7386D5;
-        }
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    color:inherit;
+}
+#sidebar ul li a:hover {
+    color: black;
+    background: #ff99cc;
+    border-radius:20px;
+}
 
-        /* #sidebar ul li.active > a, a[aria-expanded="true"] {
-            color: black;
-            background: #6d7fcc;
-        } */
-        /* ul ul a { */
-            /* font-size: 0.9em !important;
-            padding-left: 30px !important; */
-            
-            /* background: #6d7fcc; */
-        /* } */
-        /* .wrapper { */
-            /* display: flex; */
-            /* width: 100%; */
-        /* } */
+ul {
+    list-style:none;
+    margin-left:10px;
+    padding-left:0;
+}
 
-        ul {
-            list-style:none;
-            margin-left:10px;
-            padding-left:0;
-        }
+#sidebar {
+    margin-top: 78px;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    color: black;
+}
+#searchbar{
+    margin-top:6%;
+    margin-left:15%;
+}
+#searchinput{
+    width:600px;
+    position:fixed;
+    z-index:1;
+    overflow:hidden;
+}
+#patientsList{
+    float: left;
+    height: 150px;
+    margin-top:50%;
+  }
 
-        #sidebar {
-            margin-top: 78px;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            /* z-index: 999; */
-            /* background: #7386D5; */
-            color: black;
-            /* transition: all 0.3s; */
-        }

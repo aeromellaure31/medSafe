@@ -8,7 +8,7 @@ class Records extends Model
 {
     //
     protected $fillable = [
-        'patientId','doctorId','illness', 'causeBy', 'physicalExam', 'assessment', 'recommendation',
+        'patientId','doctorId','illness', 'causeBy', 'physicalExam', 'assessment', 'recommendation', 'date',
     ];
 
     public function patient(){

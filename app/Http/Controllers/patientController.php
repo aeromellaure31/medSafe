@@ -6,13 +6,18 @@ use App\model\AppointmentRequests;
 use App\model\Doctors;
 use App\model\Nationalities;
 use App\model\Patient;
-use App\model\Records;
+use App\model\Records;  
 use App\model\Specialties;
 use Illuminate\Http\Request;
 
 class patientController extends Controller
 {
-    public $user_email ='';
+    private $user_email;
+    public $requests;
+    public function __construct()
+    {
+        $this->middleware('guest', ['except' => 'logout']);
+    }
     // joining two tables nationality/specialty and patient table to create nationality_id.
     public function nationality_specialty($j, $x)
     {
@@ -50,23 +55,28 @@ class patientController extends Controller
             $user->specialtyId = $id_specialty;
             $user->nationalityId = $id_nationality;
             $user->save();
+            $this->user_email = $request->email;
             $id = doctors::select('id')->where('email', $request->email)->get();
             $doc = doctors::find($id);
             $request->session()->put('user', $doc[0]->firstname." ".$doc[0]->lastname);
             $request->session()->put('doctorId', $id);
-            return redirect('/doctor/dashboard')->with('user', $request->session()->get('user'));
+            $request->session()->put('userType', 'doctor');
+            return redirect('/patients')->with('user', $request->session()->get('user'));
         } else {
             $user = new patient($data);
             $user->nationalityId = $id_nationality;
             $doctors = doctors::all();
             $user->save();
+            $this->user_email = $request->email;
             $id = patient::select('id')->where('email', $request->email)->get();
             $patient = patient::find($id);
             $request->session()->put('user', $patient[0]->firstname." ".$patient[0]->lastname);
             $request->session()->put('patientId', $id);
+            $request->session()->put('userType', 'patient');
             return view('patientDashboard', compact('doctors'))->with('user', $request->session()->get('user'));
         }
     }
+
 
     public function retrieveUser()
     {
@@ -120,26 +130,82 @@ class patientController extends Controller
     // show all patients
     public function retrieve_all_patients()
     {
-        return patients::all();
+        return patient::all();
     }
 
+    // find specific patient for patient profile
+    function search(Request $request){
+        $requests = [];
+        $key_search = patient::where('firstname','like', '%' . $request->name . '%')->get(['id']);
+        foreach($key_search as $patient){
+            $req = AppointmentRequests::with('requestDoctor')->get()->where('patient_id', $patient->id);
+            array_push($requests, $req);
+            echo $req;
+        }
+        // return view('dashboard_doctor',compact('requests'));
+    }
+
+    function find_patient(Request $request){
+        $AppointmentRequests = AppointmentRequests::find($request->id);
+        $AppointmentRequests->Status = 1;
+        $AppointmentRequests->save();
+        $patient = AppointmentRequests::with('requestDoctor')->get()->where('id',$request->id);
+        $links = session()->has('links') ? session('links') : [];
+        $currentLink = request()->path(); // Getting current URI 
+        array_unshift($links, $currentLink); // Putting it in the beginning of links array
+        session(['links' => $links]); // Saving links array to the session
+        return view('dashboard_doctor',compact('patient'));
+        }
+
+
+    // -----------------------DASHBOARD----------
+    // function doctor_dashboard(){
+    //     return $this->requests();
+    // }
+
+    function patient_dashboard(Request $request){
+        $doctors = doctors::all();
+        return view('patientDashboard', compact('doctors'))->with('user', $request->session()->get('user'));
+    }
+
+
+    // --------------------REQUEST----------
+    
     // make appointment send request to doctor
     public function send_request(Request $request)
     {
-        $request = new AppointmentRequests(['patient_id' => $request->patient_id, 'doctor_id' => $request->doctor_id]);
+        $patient_id = $request->session()->get('patientId');
+        $request = new AppointmentRequests(['patient_id' => $patient_id[0]->id, 'doctor_id' => $request->doctor_id]);
         $request->message = 'hai';
         $request->save();
+        return redirect('notify');
     }
+
 
     // ang request id iyang dawaton gikan sa front-end
     public function accept_request(Request $request)
     {
         $acceptRequest = AppointmentRequests::find($request->request_id);
-        foreach ($acceptRequest as $a) {
-            $acceptRequest->request = 1;
-            $acceptRequest->save();
-        }
+        $acceptRequest->request = 1;
+        $acceptRequest->save();
+        return redirect('patients');
     }
+    // GET ALL ACCEPTED REQUEST FROM DOCTOR
+    function requests(Request $request){
+        $doctor = doctors::find($request->session()->get('doctorId'));
+        $requests = AppointmentRequests::with('requestDoctor')->get()->where('doctor_id',$doctor[0]->id);
+        $this->requests = $requests;
+        return view('dashboard_doctor',compact('requests'));
+    }
+    
+    // GET ALL UNACCEPTED REQUEST FROM DOCTOR
+    function unaccepted_request(Request $request){
+        $doctor = $request->session()->get('doctorId');
+        $requests = AppointmentRequests::with('requestDoctor')->get()->where('request',0)->where('doctor_id',$doctor[0]->id);
+        return view('dashboard_doctor',compact('requests'));
+    }
+    // -------------------------------
+
     // make a record for a specific patient
     public function add_record(Request $request)
     {
@@ -147,6 +213,8 @@ class patientController extends Controller
         $record->patient_id = $request->patient_id;
         $record->save();
     }
+
+   
 
     // authenticate login
     public function login(Request $request)
@@ -162,7 +230,8 @@ class patientController extends Controller
                     $this->user_email = $request->email;
                     $request->session()->put('user', $user[0]->firstname." ".$user[0]->lastname);
                     $request->session()->put('doctorId', $id);
-                    return view('dashboard_doctor', compact('doctors'))->with('user', $request->session()->get('user'));
+                    $request->session()->put('userType', 'doctor');
+                    return redirect('/patients')->with('user', $request->session()->get('user'));
                 } else {
                     return redirect('/');
                 }
@@ -178,6 +247,7 @@ class patientController extends Controller
                 $user = patient::find($id);
                 $request->session()->put('user', $user[0]->firstname." ".$user[0]->lastname);
                 $request->session()->put('patientId', $id);
+                $request->session()->put('userType', 'patient');
                 return view('patientDashboard', compact('doctors'))->with('user', $request->session()->get('user'));
             } else {
                 return redirect('/');

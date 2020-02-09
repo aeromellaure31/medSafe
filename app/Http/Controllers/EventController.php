@@ -29,14 +29,12 @@ class EventController extends Controller
         ->setOptions([
             'firstDay' => 0,
             'editable'    => true,
-            // 'selectable'  => true,
-            // 'defaultView' => 'month',
-            // 'minTime' => '05:00:00',
-            // 'maxTime' => '22:00:00',
         ])
         ->setCallbacks([
             'eventClick' => 'function(event){
-                alert(event["title"]);
+                $("#modal").show();
+                $("#title").text(event.title);
+                console.log("You clicked on an event!");
             }',
         ]);
         return view('mycalendar', compact('calendar'));
@@ -52,7 +50,8 @@ class EventController extends Controller
         ]);
  
         if ($validator->fails()) {
-        	\Session::flash('warnning','Please enter the valid details');
+            \Session::flash('warnning','Please enter the valid details');
+            
             return Redirect::to('/events')->withInput()->withErrors($validator);
         }
         // dd(date('Y-m-d'));

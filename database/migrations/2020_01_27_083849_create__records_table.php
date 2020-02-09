@@ -15,6 +15,7 @@ class CreateRecordsTable extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('date');
             $table->integer('patientId');
             $table->integer('doctorId');
             $table->string('illness');
@@ -32,6 +33,6 @@ class CreateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_records');
+        Schema::dropIfExists('records');
     }
 }

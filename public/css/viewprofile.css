@@ -1,0 +1,41 @@
+h3{
+    font-family: algerian;
+    float: left;
+}
+
+h1{
+    font-family: algerian;
+}
+
+img{
+    border-radius: 50%;
+}
+
+body{
+    overflow: hidden;
+}
+
+button{
+    width:10%;
+}
+
+#req_btn{
+    float:center; 
+    margin-left:10%;
+}
+
+#back_btn{
+    float:center; 
+    margin-right:10%;  
+    margin-top:-3.6%;
+}
+
+img{
+    height:250px;
+    width:300px;
+}
+#body{
+    background: -webkit-linear-gradient(top, transparent, #66d9ff);
+    margin-left:4%;
+    padding:2%;
+}

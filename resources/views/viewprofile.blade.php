@@ -7,31 +7,13 @@
         <link rel='stylesheet' type='text/css' href="{{ url('css/sidebar.css')}}"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
         <link rel='stylesheet' type='text/css' href="{{ url('css/header.css')}}"/>
+        <link rel='stylesheet' type='text/css' href="{{ url('css/viewprofile.css')}}"/>
     </head>
-    <style>
-        h3{
-            font-family: algerian;
-            float: left;
-        }
-
-        h1{
-            font-family: algerian;
-        }
-
-        img{
-            border-radius: 50%;
-        }
-
-        body{
-            overflow: hidden;
-        }
-    </style>
-
-<body style="background: -webkit-linear-gradient(left, #3931af, #00c6ff);">
+<body>
     <center>
         <div class="header">
             <i class="fa fa-file-medical fa-3x">MedSafe</i>
-        </div>
+        </div><br><br><br><br>
     </center>
     <div style="margin-left:15%;">
         <div class="row">
@@ -39,9 +21,15 @@
                 @include('sidebar')
             </div>
         </div> 
+        <div id="body">
         <center>
-            <div class="container" style="margin-top: 1%;">
-                <img src="https://image.freepik.com/free-photo/beautiful-young-female-doctor-looking-camera-office_1301-7807.jpg" height='250px' width='300px' >
+        
+            <div class="container">
+                @if($doctors[0]->gender == 'female')
+                <img src="{{ URL::asset('css/images/female.png') }}">
+                @else
+                <img src="{{URL::asset('css/images/male.png') }}">
+                @endif
                 <h1>Dr. {{$doctors[0]->firstname}} {{$doctors[0]->lastname}} </h1><br>
                 <div class="row" style="width:650px;">
                     <div style="float:left; width:300px; margin-left:7%;">
@@ -59,13 +47,15 @@
         </center>
         <div>
             <center>
-                <form method="get" style="float:center; margin-left:7%;">
-                    <button class="btn btn-primary" type="submit">Request</button>
+                <form id="req_btn" method="get" 
+                action="{{route('request.doctor',$doctors[0]->id)}}">
+                  <button class="btn btn-primary" type="submit">Request</button>
                 </form>
-                <form action="{{route('cancel')}}" method="get" style="float:center; margin-right:7%;  margin-top:-3.2%;">
+                <form id="back_btn" action="{{route('cancel')}}" method="get">
                     <button class="btn btn-primary" type="submit">Back</button>
                 </form>
             </center>
+        </div>
         </div>
     </div>
 </body>

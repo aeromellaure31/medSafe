@@ -18,6 +18,7 @@ class CreateAppointmentRequestsTable extends Migration
             $table->integer('patient_id');
             $table->integer('doctor_id');
             $table->string('message')->default('');
+            $table->boolean('status')->default(0);
             $table->boolean('request')->default(0);
             $table->timestamps();
         });
